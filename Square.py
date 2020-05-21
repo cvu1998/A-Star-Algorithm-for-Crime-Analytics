@@ -27,6 +27,9 @@ class Square(object):
             self.Vertex3 == vertex or
             self.Vertex4 == vertex):
             return False
-        return True
+        elif (vertex.x < self.Vertex4.x and vertex.y < self.Vertex4.y and
+       vertex.x > self.Vertex1.x and vertex.y > self.Vertex1.y):
+            return True
+        return False
 
 
