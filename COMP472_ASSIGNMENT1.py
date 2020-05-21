@@ -29,6 +29,8 @@ while not EndProgram:
 
     XAxis = numpy.arange(sf.bbox[0], sf.bbox[2] + step, step)
     YAxis = numpy.arange(sf.bbox[1], sf.bbox[3] + step, step)
+    #print(sf.bbox[0], sf.bbox[2] + step)
+    #print(sf.bbox[1], sf.bbox[3] + step)
 
 
     shapeRecords = sf.shapeRecords()
@@ -75,43 +77,58 @@ while not EndProgram:
     pyplot.figure()
     pyplot.imshow(H, cmap=cmap, norm=norm, interpolation='nearest', origin='low', extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]])
 
-    array = numpy.zeros(shape=(len(xedges) * len(yedges), 2))
-    counter = 0
-    for i in range(len(xedges)):
-        for j in range(len(yedges)):
-            array[counter] = [xedges[i], yedges[j]]
-            counter = counter + 1
-
-    quads = []
     lenX = len(xedges)
     lenY = len(yedges)
-    for i in range(len(xedges) - 1):
-        for j in range(len(yedges) - 1):
-            v1 = Vertex.Vertex(array[j + (i * lenX)][0], array[j + (i * lenY)][1])
-            v2 = Vertex.Vertex(array[j + (i * lenX) + lenX][0], array[j + (i * lenY) + lenY][1])
-            v3 = Vertex.Vertex(array[j + (i * lenX) + 1][0], array[j + (i * lenY) + 1][1])
-            v4 = Vertex.Vertex(array[j + (i * lenX) + lenX + 1][0], array[j + (i * lenY) + lenY + 1][1])
+    vertices = []
+    for i in range(lenX):
+        for j in range(lenY):
+            vertices.append(Vertex.Vertex(xedges[i], yedges[j]))
+
+    quads = []
+    for i in range(lenX - 1):
+        for j in range(lenY - 1):
+            HighCrime = True
             if H[j][i] == 0:
-                quad = Square.Square(v1, v2, v3, v4, False)
-            else:
-                quad = Square.Square(v1, v2, v3, v4, True)
+                HighCrime = False
+            quad = Square.Square(vertices[j + (i * lenX)], vertices[j + (i * lenX) + 1], 
+                                 vertices[j + (i * lenX) + lenX], vertices[j + (i * lenX) + lenX + 1], HighCrime)
             quads.append(quad)
             #print(j + (i * lenX), j + (i * lenY) + lenY, j + (i * lenX) + 1, j + (i * lenY) + lenY + 1)
             #print(H[j][i])
 
+    BoundariesLines = {}
+    for i in range(len(xedges) - 1):
+        v1 = Vertex.Vertex(xedges[i], min(yedges))
+        v2 = Vertex.Vertex(xedges[i + 1], min(yedges))
+        v3 = Vertex.Vertex(xedges[i], max(yedges))
+        v4 = Vertex.Vertex(xedges[i + 1], max(yedges))
+        BoundariesLines[(v1, v2)] = False
+        BoundariesLines[(v3, v4)] = False
+
+        v5 = Vertex.Vertex(min(xedges), yedges[i])
+        v6 = Vertex.Vertex(min(xedges), yedges[i + 1])
+        v7 = Vertex.Vertex(max(xedges), yedges[i])
+        v8 = Vertex.Vertex(max(xedges), yedges[i + 1])
+        BoundariesLines[(v5, v6)] = False
+        BoundariesLines[(v7, v8)] = False
+
     lines = {}
     for i in quads:
         for j in i.getLines():
-            if (j.Vertex1, j.Vertex2) in lines or (j.Vertex2, j.Vertex1) in lines:
-                if (j.Vertex1, j.Vertex2) in lines:
-                    lines[(j.Vertex1, j.Vertex2)].SecondSquare = j.FirstSquare
-                elif (j.Vertex2, j.Vertex1) in lines:
-                    lines[(j.Vertex2, j.Vertex1)].SecondSquare = j.FirstSquare
+            if (j.Vertex1, j.Vertex2) in lines:
+                lines[(j.Vertex1, j.Vertex2)].SecondSquare = j.FirstSquare
+            elif (j.Vertex2, j.Vertex1) in lines:
+                lines[(j.Vertex2, j.Vertex1)].SecondSquare = j.FirstSquare
             else:
                 lines[(j.Vertex1, j.Vertex2)] = j
 
+    t1 = time.time()
+    total = t1 - t0
+    print("Time to find path: {} seconds.".format(total))
+
     for i in lines.values():
-        i.ComputeWeight()
+        if not ((i.Vertex1, i.Vertex2) in BoundariesLines or (i.Vertex2, i.Vertex1) in BoundariesLines):
+            i.ComputeWeight()
         x = numpy.linspace(i.Vertex1.x, i.Vertex2.x)
         y = numpy.linspace(i.Vertex1.y, i.Vertex2.y)
         if i.Weight == 1:
@@ -121,9 +138,9 @@ while not EndProgram:
         else:
             pyplot.plot(x, y, color=[1, 0, 0])
 
-    t1 = time.time()
-    total = t1 - t0
-    print("Time to find path: {} seconds.".format(total))
+    t2 = time.time()
+    total = t2 - t1
+    print("Time to render path: {} seconds.".format(total))
     pyplot.show()
 
     answer = input("Do you want to end the application ([Y] or [N])? ")

@@ -13,12 +13,20 @@ class Square(object):
 
         self.Line1 = Line.Line(self.Vertex1, self.Vertex2, self.OverThreshold, False)
         self.Line2 = Line.Line(self.Vertex2, self.Vertex4, self.OverThreshold, False)
-        self.Line3 = Line.Line(self.Vertex4, self.Vertex3, self.OverThreshold, False)
+        self.Line3 = Line.Line(self.Vertex3, self.Vertex4, self.OverThreshold, False)
         self.Line4 = Line.Line(self.Vertex3, self.Vertex1, self.OverThreshold, False)
         self.Line5 = Line.Line(self.Vertex1, self.Vertex4, self.OverThreshold, True)
         self.Line6 = Line.Line(self.Vertex2, self.Vertex3, self.OverThreshold, True)
         
     def getLines(self):
         return [self.Line1, self.Line2, self.Line3, self.Line4, self.Line5, self.Line6]
+
+    def isInside(self, vertex):
+        if (self.Vertex1 == vertex or
+            self.Vertex2 == vertex or
+            self.Vertex3 == vertex or
+            self.Vertex4 == vertex):
+            return False
+        return True
 
 

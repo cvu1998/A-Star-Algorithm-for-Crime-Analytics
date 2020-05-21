@@ -1,7 +1,7 @@
 import Vertex
 
 class Line:
-    
+
     def __init__(self, v1, v2, FirstSquare, Diagonal):
         self.Vertex1 = v1
         self.Vertex2 = v2
