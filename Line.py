@@ -19,5 +19,3 @@ class Line:
         elif (not self.FirstSquare and self.SecondSquare) or (self.FirstSquare and not self.SecondSquare):
             if not self.Diagonal:
                 self.Weight = 1.3
-        else:
-            self.Weight = -1
