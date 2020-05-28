@@ -3,6 +3,7 @@ import Vertex
 
 class Square(object):
 
+    # A square contains 4 vertices and 6 lines
     def __init__(self, v1, v2, v3, v4, OverThreshold):
         self.Vertex1 = v1
         self.Vertex2 = v2
@@ -31,5 +32,3 @@ class Square(object):
        vertex.x > self.Vertex1.x and vertex.y > self.Vertex1.y):
             return True
         return False
-
-

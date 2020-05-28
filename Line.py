@@ -2,6 +2,7 @@ import Vertex
 
 class Line:
 
+    # A line contains 2 vertices and is between 2 squares or is a diagonal
     def __init__(self, v1, v2, FirstSquare, Diagonal):
         self.Vertex1 = v1
         self.Vertex2 = v2
