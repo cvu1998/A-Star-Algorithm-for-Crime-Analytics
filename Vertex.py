@@ -1,3 +1,9 @@
+# -------------------------------------------------------
+# Assignment 1
+# Written by Cong-Vinh Vu, Student ID: 40061685
+# For COMP 472 Section JX – Summer 2020
+# --------------------------------------------------------
+
 class Vertex:
     
     def __init__(self, x, y):

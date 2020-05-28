@@ -1,3 +1,9 @@
+# -------------------------------------------------------
+# Assignment 1
+# Written by Cong-Vinh Vu, Student ID: 40061685
+# For COMP 472 Section JX – Summer 2020
+# --------------------------------------------------------
+
 import copy
 import math
 
@@ -273,6 +279,7 @@ def runProgram():
         else:
             print("Due to blocks, no path was found. Please change the map and try again.\n")
 
+        pyplot.plot([start.x], [start.y], marker='o', markersize=5, color=[0, 1, 0])
         pyplot.plot([end.x], [end.y], marker='o', markersize=5, color=[0, 0, 0])
 
         t2 = time.time()
