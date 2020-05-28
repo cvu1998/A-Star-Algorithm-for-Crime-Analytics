@@ -147,19 +147,22 @@ def runProgram():
                     lines[(j.Vertex1, j.Vertex2)] = j
 
         # Set the children for each vertex
-        areChildren = False
-        children = set()
+        isAChild = False
         for i in vertices:
             for j in lines:
+                childIndex = -1
+                index = 0
                 for k in j:
+                    index += 1
                     if i == k:
-                        areChildren = True
-                    else:
-                        children.add(k)
-                if areChildren:
-                    i.children = i.children.union(children)
-                areChildren = False
-                children.clear()
+                        isAChild = True
+                        childIndex = index - 1
+                if isAChild:
+                    if childIndex == 0:
+                        i.children.add(list(j)[1])
+                    elif childIndex == 1:
+                        i.children.add(list(j)[0])
+                isAChild = False
 
         # Loop to ensure valid input for starting and ending coordinates. (Inside the map)
         isValid = False
@@ -269,7 +272,7 @@ def runProgram():
         print("Time to find path: {} seconds.".format(total))
 
         # Each line is composed of 2 vertices, use them to plot a line
-        print("Optimal path: {}".format(G))
+        print("Optimal path: {}".format(round(G * 10) / 10))
         if (end, G) in paths:
             print("Found a path!\n")
             for i in paths[(end, G)]:
