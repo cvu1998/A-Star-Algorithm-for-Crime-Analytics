@@ -1,12 +1,12 @@
 # A-Star-Algorithm-for-Crime-Analytics
 
-#Library Used
-matplotlib
-numpy
-shapefile
+#Library Used: \
+matplotlib \
+numpy \
+shapefile \
 time
 
-1. First, download the zip file A1_40061685.zip.
+1. First, download the zip file.
 2. Extract the contents of the zip file.
 3. Move your current directory to the directory where COMP472_ASSIGNMENT1.py is located.
 4. To run the application, run COMP472_ASSIGNMENT1.py python script.
