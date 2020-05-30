@@ -1,6 +1,6 @@
 # A-Star-Algorithm-for-Crime-Analytics
 
-#Library Used: \
+Library Used: \
 matplotlib \
 numpy \
 shapefile \
