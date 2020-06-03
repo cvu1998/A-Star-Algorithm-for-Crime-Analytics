@@ -255,17 +255,21 @@ def runProgram():
                         F = H + Gn
                         open[F] = [Gn, i]
                         # Append the children node to a path
-                        if (CurrentVertex, G) in paths:
-                            paths[(i, Gn)] = copy.copy(paths[CurrentVertex, G])
-                            paths[(i, Gn)].append(line)
+                        if CurrentVertex in paths:
+                            if G in paths[CurrentVertex]:
+                                if not (i in paths):
+                                    paths[i] = {Gn : copy.copy(paths[CurrentVertex][G])}
+                                    paths[i][Gn].append(line)
+                                else:
+                                    paths[i][Gn] = copy.copy(paths[CurrentVertex][G])
+                                    paths[i][Gn].append(line)
                         else:
-                            paths[(i, Gn)] = [line]
+                            paths[i] = {Gn : [line]}
 
         # Find the optimal path to end node by finding smallest g(n)
-        for i in paths:
-            if end == list(i)[0]:
-                if list(i)[1] < G:
-                    G = list(i)[1]
+        keys = list(paths[end].keys())
+        keys.sort()
+        G = keys[0]
 
         t1 = time.time()
         total = t1 - t0
@@ -273,9 +277,9 @@ def runProgram():
 
         # Each line is composed of 2 vertices, use them to plot a line
         print("Optimal path: {}".format(round(G * 10) / 10))
-        if (end, G) in paths:
+        if end in paths:
             print("Found a path!\n")
-            for i in paths[(end, G)]:
+            for i in paths[end][G]:
                 x = numpy.linspace(i.Vertex1.x, i.Vertex2.x)
                 y = numpy.linspace(i.Vertex1.y, i.Vertex2.y)
                 pyplot.plot(x, y, color=[0, 1, 0])
